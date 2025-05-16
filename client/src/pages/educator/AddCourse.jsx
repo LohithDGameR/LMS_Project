@@ -8,7 +8,7 @@ const AddCourse = () => {
   const editorRef = useRef(null);
   const [courseTitle, setCourseTitle] = useState("");
   const [coursePrice, setCoursePrice] = useState(0);
-  const [discount, setDiscoun] = useState(0);
+  const [discount, setDiscount] = useState(0);
   const [image, setImage] = useState(null);
   const [chapters, setChapters] = useState([]);
   const [currentChapterId, setCurrentChapterId] = useState();

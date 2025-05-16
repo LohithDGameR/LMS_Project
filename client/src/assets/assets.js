@@ -27,9 +27,12 @@ import home_icon from './home_icon.svg'
 import add_icon from './add_icon.svg'
 import my_course_icon from './my_course_icon.svg'
 import person_tick_icon from './person_tick_icon.svg'
-import facebook_icon from './facebook_icon.svg'
+import github from './github.svg'
+import github_icon from './github_icon.svg'
+import instagram from './instagram.svg'
 import instagram_icon from './instagram_icon.svg'
-import twitter_icon from './twitter_icon.svg'
+import linkedin_icon from './linkedin_icon.svg'
+import linkedin from './linkedin.svg'
 import file_upload_icon from './file_upload_icon.svg'
 import appointments_icon from './appointments_icon.svg'
 import earning_icon from './earning_icon.svg'
@@ -75,9 +78,12 @@ export const assets = {
     add_icon,
     my_course_icon,
     person_tick_icon,
-    facebook_icon,
+    github_icon,
+    github,
+    instagram,
     instagram_icon,
-    twitter_icon,
+    linkedin,
+    linkedin_icon,
     course_4,
     file_upload_icon,
     appointments_icon,

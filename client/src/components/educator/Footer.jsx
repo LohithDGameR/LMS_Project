@@ -14,14 +14,23 @@ text-gray-500">
         </p>
       </div>
       <div className="flex items-center gap-3 max-md:mt-4">
-        <a href="#">
-          <img src={assets.facebook_icon} alt="facebook_icon" />
+        <a
+          href="https://www.instagram.com/lohithoffical_?igsh=dWIxaGd4czJ3c3Y1"
+          target="_blank"
+          rel="noopener noreferrer">
+          <img src={assets.instagram_icon} alt="facebook_icon" />
         </a>
-        <a href="#">
-          <img src={assets.twitter_icon} alt="twitter_icon" />
+        <a
+          href="https://github.com/LohithDGameR"
+          target="_blank"
+          rel="noopener noreferrer">
+          <img src={assets.github_icon} alt="twitter_icon" />
         </a>
-        <a href="#">
-          <img src={assets.instagram_icon} alt="instagram_icon" />
+        <a
+          href="https://www.linkedin.com/in/lohith-kallapalli-71480622b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+          target="_blank"
+          rel="noopener noreferrer">
+          <img src={assets.linkedin_icon} alt="instagram_icon" />
         </a>
       </div>
     </footer>

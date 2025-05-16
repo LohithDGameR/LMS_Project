@@ -60,7 +60,7 @@ const Dashboard = () => {
                   <th className="px-4 py-3 font-semibold">Course Title</th>
                 </tr>
               </thead>
-              <tbody className="text-sm text-gray-500">
+              <tbody className="text-sm text-gray-900">
                 {dashboardData.enrolledStudentsData.map((item, index) => (
                   <tr key={index} className="border-b border-gray-500/20">
                     <td className="px-4 py-3 text-center hidden sm:table-cell">

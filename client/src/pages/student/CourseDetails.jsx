@@ -42,9 +42,9 @@ const CourseDetails = () => {
   return courseData ? (
     <>
       <div className="flex md:flex-row flex-col-reverse gap-10 relative items-center justify-between md:px-36 px-8 md:pt-30 pt-20 text-left">
-        <div className="absolute top-0 left-0 w-full h-section-height -z-1 bg-gradient-to-b from-cyan-100/70"></div>
+        <div className="absolute top-0 left-0 w-full h-section-height -z-1 bg-gradient-to-b from-sky-300/70"></div>
         {/* left column */}
-        <div className="max-w-xl z-10 text-gray-500">
+        <div className="max-w-xl z-10 text-gray-800">
           <h1 className="md:text-course-deatails-heading-small font-semibold text-gray-800">
             {courseData.courseTitle}
           </h1>
@@ -71,7 +71,7 @@ const CourseDetails = () => {
                 />
               ))}
             </div>
-            <p className="text-gray-500">
+            <p className="text-gray-800">
               {courseData.courseRatings.length}{" "}
               {courseData.courseRatings.length > 1 ? "ratings" : "rating"}
             </p>
@@ -192,14 +192,14 @@ const CourseDetails = () => {
                   (courseData.discount * courseData.coursePrice) / 100
                 ).toFixed(0)}{" "}
               </p>
-              <p className="md:text-lg text-gray-500 line-through">
+              <p className="md:text-lg text-gray-800 line-through">
                 {currency} {courseData.coursePrice}{" "}
               </p>
-              <p className="md:text-lg text-gray-500">
+              <p className="md:text-lg text-gray-800">
                 {courseData.discount}% off
               </p>
             </div>
-            <div className="flex items-center text-sm md:text-default gap-4 pt-2 md:pt-4 text-gray-500">
+            <div className="flex items-center text-sm md:text-default gap-4 pt-2 md:pt-4 text-gray-800">
               <div className="flex items-center gap-1">
                 <img src={assets.star} alt="star icon" />
                 <p>{calculateRating(courseData)}</p>
@@ -226,7 +226,7 @@ const CourseDetails = () => {
               <p className="md:text-xl text-lg font-medium text-gray-800">
                 what's in the course?
               </p>
-              <ul className="ml-4 pt-2 text-sm md:text-default list-disc text-gray-500">
+              <ul className="ml-4 pt-2 text-sm md:text-default list-disc text-gray-800">
                 <li>Lifetime access with free updates.</li>
                 <li>Step-by-step, hands-on project guidence.</li>
                 <li>Downloadable resources and source code.</li>
