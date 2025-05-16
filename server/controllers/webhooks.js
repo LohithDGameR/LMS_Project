@@ -19,7 +19,7 @@ export const clerkWebhooks = async (req, res) => {
       case "user.created": {
         const userData = {
           _id: data._id,
-          email: data.email_addresses[0].email_address,
+          email: data.email_addresses[0]?.email_address || "", // Handle potential empty array
           name: data.first_name + " " + data.last_name,
           imagUrl: data.image_url,
         };
@@ -36,7 +36,7 @@ export const clerkWebhooks = async (req, res) => {
           name: data.first_name + " " + data.last_name,
           imagUrl: data.image_url,
         };
-        await userData.findByIdAndUpdate(data.id, userData);
+        await User.findByIdAndUpdate(data.id, userData);
         res.json({});
         break;
       }
