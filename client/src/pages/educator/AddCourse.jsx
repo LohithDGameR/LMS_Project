@@ -1,25 +1,29 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import uniqid from "uniqid";
 import Quill from "quill";
 import { assets } from "../../assets/assets";
+import { AppContext } from "../../context/AppContext";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const AddCourse = () => {
+  const { backendUrl, getToken } = useContext(AppContext);
   const quillRef = useRef(null);
   const editorRef = useRef(null);
+
   const [courseTitle, setCourseTitle] = useState("");
   const [coursePrice, setCoursePrice] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [image, setImage] = useState(null);
   const [chapters, setChapters] = useState([]);
-  const [currentChapterId, setCurrentChapterId] = useState();
-
-  const [showPopup, setShowPopup] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [currentChapterId, setCurrentChapterId] = useState(null);
 
   const [lectureDetails, setLectureDetails] = useState({
     lectureTitle: "",
     lectureDetails: "",
     lectureUrl: "",
-    isPreviewFree: "",
+    isPreviewFree: false,
   });
 
   const handleChapter = (action, chapterId) => {
@@ -93,10 +97,49 @@ const AddCourse = () => {
     });
   };
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
+      if (!image) {
+        toast.error("Thumbnail Not Selected");
+      }
+
+      const courseData = {
+        courseTitle,
+        courseDescription: quillRef.current.root.innerHTML,
+        coursePrice: Number(coursePrice),
+        discount: Number(discount),
+        courseContent: chapters,
+      };
+
+      const formData = new FormData();
+      formData.append("courseData", JSON.stringify(courseData));
+      formData.append("image", image);
+
+      const token = await getToken();
+      const { data } = await axios.post(
+        backendUrl + "/api/educator/add-course",
+        formData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        setCourseTitle("");
+        setCoursePrice(0);
+        setDiscount(0);
+        setImage(null);
+        setChapters([]);
+        quillRef.current.root.innerHTML = "";
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {
+    // Initiate Quill only once
     if (!quillRef.current && editorRef.current) {
       quillRef.current = new Quill(editorRef.current, {
         theme: "snow",
@@ -108,7 +151,9 @@ const AddCourse = () => {
     <div
       className="h-screen overflow-scroll flex flex-col items-start 
     justify-between md:p-8 md:pb-0 p-4 pt-8 pb-0">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md w-full text-gray-500">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4 max-w-md w-full text-gray-500">
         <div className="flex flex-col gap-1">
           <p>Course Title</p>
           <input
@@ -116,15 +161,15 @@ const AddCourse = () => {
             value={courseTitle}
             type="text"
             placeholder="Type here"
-            className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500"
+            className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500 text-gray-900"
             required
           />
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 text-gray-900">
           <p>Course Description</p>
           <div ref={editorRef}></div>
         </div>
-        <div className="flex items-center justify-between flex-wrap">
+        <div className="flex items-center justify-between flex-wrap text-gray-900">
           <div className="flex flex-col gap-1">
             <p>Course Price</p>
             <input
@@ -133,7 +178,7 @@ const AddCourse = () => {
               type="number"
               placeholder="0"
               className="outline-none 
-md:py-2.5 py-2 w-28 px-3 rounded border border-gray-500"
+md:py-2.5 py-2 w-28 px-3 rounded border border-gray-500 " 
               required
             />
           </div>
@@ -155,13 +200,13 @@ md:py-2.5 py-2 w-28 px-3 rounded border border-gray-500"
               />
               <img
                 className="max-h-10"
-                src={image ? URL.createObjectURL(image) : ""}
+                src={image ? URL.createObjectURL(image) : null}
                 alt=""
               />
             </label>
           </div>
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 text-gray-900">
           <p>Discount %</p>
           <input
             onChange={(e) => setDiscount(e.target.value)}
@@ -177,7 +222,7 @@ md:py-2.5 py-2 w-28 px-3 rounded border border-gray-500"
         {/* Adding Chapters & Lectures */}
         <div>
           {chapters.map((chapter, chapterIndex) => (
-            <div key={chapterIndex} className="bg-white border rounded-1g mb-4">
+            <div key={chapterIndex} className="bg-white border rounded-lg mb-4">
               <div className="flex justify-between items-center p-4 border-b">
                 <div className="flex items-center">
                   <img
@@ -236,7 +281,7 @@ md:py-2.5 py-2 w-28 px-3 rounded border border-gray-500"
                     </div>
                   ))}
                   <div
-                    className="inline-flex bg-gray-100 p-2 rounded cursor-pointer mt-2"
+                    className="inline-flex bg-gray-100 p-2 rounded cursor-pointer mt-2 text-gray-900"
                     onClick={() => handleLecture("add", chapter.chapterId)}>
                     + Add Lecture
                   </div>
@@ -245,7 +290,7 @@ md:py-2.5 py-2 w-28 px-3 rounded border border-gray-500"
             </div>
           ))}
           <div
-            className="flex justify-center items-center bg-blue-100 p-2 rounded-lg cursor-pointer"
+            className="flex justify-center items-center bg-blue-100 hover:bg-blue-200 p-2 rounded-lg cursor-pointer text-gray-900"
             onClick={() => handleChapter("add")}>
             + Add Chapter
           </div>
@@ -253,12 +298,12 @@ md:py-2.5 py-2 w-28 px-3 rounded border border-gray-500"
           {showPopup && (
             <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
               <div className="bg-white text-gray-700 p-4 rounded relative w-full max-w-80">
-                <h2 className="text-lg font-semibold mb-4">Add Lecture</h2>
+                <h2 className="text-lg font-semibold mb-4 text-gray-900">Add Lecture</h2>
                 <div className="fb-2">
                   <p>Lecture Title</p>
                   <input
                     type="text"
-                    className="mt-1 block w-full border rounded py-1 px-2"
+                    className="mt-1 block w-full border rounded py-1 px-2 text-gray-900"
                     value={lectureDetails.lectureTitle}
                     onChange={(e) =>
                       setLectureDetails({
@@ -268,7 +313,7 @@ md:py-2.5 py-2 w-28 px-3 rounded border border-gray-500"
                     }
                   />
                 </div>
-                <div className="mb-2">
+                <div className="mb-2 text-gray-900">
                   <p>Duration (minutes)</p>
                   <input
                     type="number"
@@ -282,7 +327,7 @@ md:py-2.5 py-2 w-28 px-3 rounded border border-gray-500"
                     }
                   />
                 </div>
-                <div className="mb-2">
+                <div className="mb-2 text-gray-900">
                   <p>Lecture URL</p>
                   <input
                     type="text"
@@ -296,7 +341,7 @@ md:py-2.5 py-2 w-28 px-3 rounded border border-gray-500"
                     }
                   />
                 </div>
-                <div className="flex gap-2 my-4">
+                <div className="flex gap-2 my-4 text-gray-900">
                   <p>Is Preview Free?</p>
                   <input
                     type="checkbox"
@@ -312,7 +357,8 @@ md:py-2.5 py-2 w-28 px-3 rounded border border-gray-500"
                 </div>
                 <button
                   type="button"
-                  className="w-full bg-blue-400 text-white px-4 py-2 rounded" onClick={addLecture}>
+                  className="w-full bg-blue-400 text-white px-4 py-2 rounded"
+                  onClick={addLecture}>
                   Add
                 </button>
                 <img
@@ -327,7 +373,7 @@ md:py-2.5 py-2 w-28 px-3 rounded border border-gray-500"
         </div>
         <button
           type="submit"
-          className="bg-black text-white w-max py-2.5 px-8 rounded my-4">
+          className="border border-black text-black bg-white hover:bg-black hover:text-white w-max py-2.5 px-8 rounded-md my-4">
           ADD
         </button>
       </form>

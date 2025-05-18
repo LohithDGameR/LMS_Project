@@ -1,4 +1,5 @@
 import express from "express";
+import { ClerkExpressRequireAuth } from '@clerk/clerk-sdk-node';
 import {
     addUserRating,
     getUserCourseProgress,
@@ -11,7 +12,7 @@ import {
 const userRouter = express.Router();
 
 userRouter.get("/data", getUserData);
-userRouter.get("/enrolled-courses", userEnrolledCourses);
+userRouter.get("/enrolled-courses",  ClerkExpressRequireAuth, userEnrolledCourses);
 userRouter.post("/purchase", purchaseCourse);
 
 userRouter.post("/update-course-progress", updateUserCourseProgress);

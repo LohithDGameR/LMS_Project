@@ -13,7 +13,7 @@ const CallToAction = () => {
         goals and aspirations.{" "}
       </p>
       <div className="flex items-center font-medium gap-6 mt-4">
-        <button className="px-10 py-3 rounded-full text-white bg-blue-600">
+        <button className="px-10 py-3 rounded-full text-white bg-blue-600 hover:bg-blue-700">
           Get started
         </button>
         <button className="flex items-center gap-2">

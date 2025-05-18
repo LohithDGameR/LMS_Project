@@ -1,5 +1,4 @@
 import React from "react";
-import { assets } from "../../assets/assets";
 import SearchBar from "./SearchBar";
 
 const Hero = () => {
@@ -9,11 +8,6 @@ const Hero = () => {
         Discover courses indexed to
         <br />
         <span className="text-blue-600">fit your future goals at Acadex.</span>
-        <img
-          src={assets.sketch}
-          alt="sketch"
-          className="md:block hidden absolute -bottom-7 right-0"
-        />
       </h1>
 
       <p className="md:block hidden text-gray-800 max-w-2x1 mx-auto">

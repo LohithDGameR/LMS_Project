@@ -3,18 +3,27 @@ import Course from "../modles/Course.js";
 import { Purchase } from "../modles/Purchase.js";
 import User from "../modles/User.js";
 
+// In your userController.js
 export const getUserData = async (req, res) => {
+  console.log("getUserData - req.auth:", req.auth);
+  const clerkUserId = req.auth.userId;
+  console.log("getUserData - clerkUserId from req.auth:", clerkUserId);
   try {
-    const userId = req.auth.userId;
-    const user = await User.findById(userId);
+    // First, let's log ONE user document from your database to see its structure
+    const sampleUser = await User.findOne({});
+    console.log("getUserData - Sample User Document:", sampleUser);
+
+    // Now, attempt to find the user by clerkUserId
+    const user = await User.findOne({ clerkId: clerkUserId });
+    console.log("getUserData - User found by clerkId:", user);
 
     if (!user) {
       return res.json({ success: false, message: "User Not Found" });
     }
-
     res.json({ success: true, user });
   } catch (error) {
-    res.json({ success: false, message: error.message });
+    console.error("getUserData - Database error:", error);
+    res.status(500).json({ success: false, message: "Database error" });
   }
 };
 
