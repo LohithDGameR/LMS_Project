@@ -17,37 +17,29 @@ const MyEnrollments = () => {
     calculateNoOfLectures,
   } = useContext(AppContext);
   const [progressArray, setProgressArray] = useState([
-    { lectureCompleted: 0, totalLectures: 4 },
-    { lectureCompleted: 2, totalLectures: 4 },
-    { lectureCompleted: 4, totalLectures: 4 },
-    { lectureCompleted: 3, totalLectures: 6 },
-    { lectureCompleted: 4, totalLectures: 4 },
-    { lectureCompleted: 2, totalLectures: 4 },
-    { lectureCompleted: 3, totalLectures: 6 },
-    { lectureCompleted: 4, totalLectures: 4 },
   ]);
 
   const getCourseProgress = async () => {
-    // try {
-    //   const token = await getToken();
-    //   const tempProgressArray = await Promise.all(
-    //     enrolledCourses.map(async (course) => {
-    //       const { data } = await axios.post(
-    //         `${backendUrl}/api/user/get-course-progress`,
-    //         { courseId: course._id },
-    //         { headers: { Authorization: `Bearer ${token}` } }
-    //       );
-    //       let totalLectures = calculateNoOfLectures(course);
-    //       const lectureCompleted = data.progressData
-    //         ? data.progressData.lectureCompleted.length
-    //         : 0;
-    //       return { totalLectures, lectureCompleted };
-    //     })
-    //   );
-    //   setProgressArray(tempProgressArray);
-    // } catch (error) {
-    //   toast.error(error.message);
-    // }
+    try {
+      const token = await getToken();
+      const tempProgressArray = await Promise.all(
+        enrolledCourses.map(async (course) => {
+          const { data } = await axios.post(
+            `${backendUrl}/api/user/get-course-progress`,
+            { courseId: course._id },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          let totalLectures = calculateNoOfLectures(course);
+          const lectureCompleted = data.progressData
+            ? data.progressData.lectureCompleted.length
+            : 0;
+          return { totalLectures, lectureCompleted };
+        })
+      );
+      setProgressArray(tempProgressArray);
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {

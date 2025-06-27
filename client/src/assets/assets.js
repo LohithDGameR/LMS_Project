@@ -18,7 +18,7 @@ import star_blank from "./star_dull_icon.svg";
 import profile_img_1 from "./profile_img_1.png";
 import profile_img_2 from "./profile_img_2.png";
 import profile_img_3 from "./profile_img_3.png";
-import kiran_Profile from "./kiran_Profile.jpg";
+import kiran_profile from "./kiran_profile.jpg";
 import gana_Profile from "./gana_Profile.jpg";
 import Baba from "./Baba.jpg";
 import Pawan_reddy from "./Pawan_reddy.jpg";
@@ -69,7 +69,7 @@ export const assets = {
   profile_img_1,
   profile_img_2,
   profile_img_3,
-  kiran_Profile,
+  kiran_profile,
   gana_Profile,
   Baba,
   Pawan_reddy,
@@ -121,7 +121,7 @@ export const dummyTestimonial = [
   {
     name: "Kiran Kumar Modina",
     role: "SWE 1 @ Amazon",
-    image: assets.kiran_Profile,
+    image: assets.kiran_profile,
     rating: 5,
     feedback:
       "I've been using Imagify for nearly two years, primarily for Instagram, and it has been incredibly user-friendly, making my work much easier.",

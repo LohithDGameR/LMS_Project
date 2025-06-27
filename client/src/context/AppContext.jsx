@@ -74,26 +74,26 @@ export const AppContextProvider = (props) => {
 
   // Fetch User Enrolled courses
   const fetchUserEnrolledCourses = useCallback(async () => {
-    setEnrolledCourses(dummyCourses);
-    // if (!userData) return; // Ensure userData is available (implies user is authenticated and data fetched)
-    // try {
-    //   const token = await getToken();
-    //   if (!token) return;
+    // setEnrolledCourses(dummyCourses);
+    if (!userData) return; // Ensure userData is available (implies user is authenticated and data fetched)
+    try {
+      const token = await getToken();
+      if (!token) return;
 
-    //   const { data } = await axios.get(
-    //     backendUrl + "/api/user/enrolled-courses",
-    //     { headers: { Authorization: `Bearer ${token}` } }
-    //   );
+      const { data } = await axios.get(
+        backendUrl + "/api/user/enrolled-courses",
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-    //   if (data.success) {
-    //     setEnrolledCourses(data.enrolledCourses?.reverse() || []);
-    //   } else {
-    //     toast.error(data.message || "Failed to fetch enrolled courses.");
-    //   }
-    // } catch (error) {
-    //   toast.error(error.response?.data?.message || error.message || "An error occurred while fetching enrolled courses.");
-    //   setEnrolledCourses([]); // Clear on error
-    // }
+      if (data.success) {
+        setEnrolledCourses(data.enrolledCourses?.reverse() || []);
+      } else {
+        toast.error(data.message || "Failed to fetch enrolled courses.");
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message || "An error occurred while fetching enrolled courses.");
+      setEnrolledCourses([]); // Clear on error
+    }
   }, [getToken, backendUrl, userData]); // Added userData as dependency
 
   // Function to calculate average rating of course
